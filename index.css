@@ -1,0 +1,63 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: 20px;
+}
+body{
+    width: 100%;
+    height: 100vh;
+    background-color: #4e6895;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 5%;
+}
+.main{
+    width: 90%;
+    height: 85%;
+    background-color: white;
+    border-radius:10px;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+.divForList{
+    display: flex;
+    flex-direction: row;
+}
+.buttonContainer{
+    display: flex;
+    flex-direction: column;
+}
+
+#pairList{
+    width: 65%;
+    height: 50vh;
+    border: grey 1px solid;
+    overflow: auto;
+}
+
+#nameValue{
+    width: 65%;
+    height: 3vh;
+}
+button{
+    margin-left: 3vw;
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: 1px solid #999;
+    background-color: #f8f8f8;
+}
+button:hover{
+    background-color:  #4e6895;
+    color: white;
+}
+#sortByValue{
+    margin-top: 10px;
+    margin-bottom: 25px;
+}
+.selected{
+    background: rgba(239, 149, 149, 0.74);
+}
