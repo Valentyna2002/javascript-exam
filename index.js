@@ -3,31 +3,36 @@ let pairList = document.getElementById('pairList')
 let createList = document.createElement('ul')
 pairList.append(createList)
 
-let pairArray=[]
+let pairArray = JSON.parse(localStorage.getItem("pairs")) || []
 
-submit.onclick=function (pair){
+submit.onclick = function (pair){
     pair.preventDefault()
     let input = document.getElementById('nameValue')
     let inputSpaceRemove = input.value.trim()
     let regex = /^\s*([a-zA-Z0-9]+)\s*=\s*([a-zA-Z0-9]+)\s*$/
     let match = inputSpaceRemove.match(regex)
+
+    if (!match){
+        alert('Format is incorrect!')
+        return input.value=""
+    }
+
     let name = match[1];
     let value = match[2];
-    if (match){
-        let list=document.createElement('li')
-        pairArray.push({ name: name, value: value })
-        list.textContent=`${name}=${value}`
 
-        list.onclick=function (){
-            list.classList.toggle('selected')
-        }
-        createList.appendChild(list)
-        input.value=""
-        console.log(pairArray)
-    }if(!match) {
-        alert('Format is incorrect!')
+    let list=document.createElement('li')
+    pairArray.push({ name: name, value: value })
+    list.textContent=`${name}=${value}`
+    localStorage.setItem("pairs", JSON.stringify(pairArray))
+
+    list.onclick=function (){
+        list.classList.toggle('selected')
     }
+    createList.appendChild(list)
+    input.value=""
+    console.log(pairArray)
 }
+
 
 let sortByName = document.getElementById('sortByName')
 sortByName.onclick=function (){
@@ -39,12 +44,16 @@ sortByName.onclick=function (){
 
     for (let pair of pairArray) {
         let list = document.createElement('li');
-        list.textContent = `${pair.name}=${pair.value}`;
+        list.innerText = `${pair.name}=${pair.value}`;
+
         list.onclick=function (){
             list.classList.toggle('selected')
         }
         createList.appendChild(list)}
+    localStorage.setItem("pairs", JSON.stringify(pairArray))
+    console.log(pairArray)
 }
+
 
 let sortByValue = document.getElementById('sortByValue')
 sortByValue.onclick=function(){
@@ -52,21 +61,40 @@ sortByValue.onclick=function(){
         if (a.value > b.value) return 1
         if (a.value < b.value) return -1
     })
-    console.log(pairArray)
-
     createList.innerHTML = ""
+
     for (let pair of pairArray) {
         let list = document.createElement('li');
         list.textContent = `${pair.name}=${pair.value}`;
+
         list.onclick=function (){
             list.classList.toggle('selected')
         }
         createList.appendChild(list)}
+        localStorage.setItem("pairs", JSON.stringify(pairArray))
+    console.log(pairArray)
 }
 
 
 let deleteBtn = document.getElementById('deleteBtn')
 deleteBtn.onclick = function (){
     let selected = document.querySelectorAll('.selected')
-    selected.forEach(item=>{item.remove()})
+    selected.forEach(item=>{
+         item.remove()
+         pairArray=pairArray.filter(pair => pair.name !== item.innerText.split('=')[0])})
+
+    localStorage.setItem("pairs", JSON.stringify(pairArray))
 }
+
+window.addEventListener("load",function (){
+        createList.innerHTML = ""
+        pairArray.forEach(pair => {
+            let list = document.createElement('li');
+            list.innerText = `${pair.name}=${pair.value}`;
+            list.onclick = function () {
+                list.classList.toggle('selected');
+            };
+            createList.appendChild(list);
+        })
+    }
+)
